@@ -1,0 +1,8 @@
+&input
+nom="BARE",
+type="NONE",
+y=0.00000001,
+rho=1d-11,
+TMeV=40,
+qfm=1.0,
+readforce=.true./

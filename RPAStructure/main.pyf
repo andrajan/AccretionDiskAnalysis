@@ -1,0 +1,22 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+module main ! in main.f90
+    use asym_cstes
+    use asym
+    use asym_io
+    use omp_lib
+    function anmfp(rho,y,tmev,nom,type_bn,readforce,energy) ! in main.f90:main
+        double precision intent(in) :: rho
+        double precision intent(in) :: y
+        double precision intent(in) :: tmev
+        character*10 intent(in) :: nom
+        character*100 intent(in) :: type_bn
+        logical intent(in) :: readforce
+        double precision intent(in) :: energy
+        double precision :: anmfp
+    end function anmfp
+end module main
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
