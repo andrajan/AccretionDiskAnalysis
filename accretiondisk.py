@@ -1,11 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 24 11:13:25 2021
-
-@author: rajananderson
-"""
-import numpy as np
+mport numpy as np
 import nointercross as cr
 import edense as ed
 import scipy.integrate as integ
@@ -329,6 +322,7 @@ def gencrossdata(param,temp,dens,electronfrac):
             neutralreac_inter[i]=RPA.anmfp(rho,y,t,functionalname,ftype,readforce,1)**-1**2*mod[i]/sflux[i]/1e15
             os.chdir('..')
             i+=1
+            print(i,temp.shape[0]))
                 
     #Now we need to put the reactions together and find the total cross sections for different species
     
@@ -410,7 +404,7 @@ param={
                        },
                 'paramRPA' :
                     {
-                        'functional name' : 'BARE', #see .param files in RPAStructure directory for possible inputs
+                        'functional name' : 'SLY4', #see .param files in RPAStructure directory for possible inputs
                         'type' : 'NONE',
                         'readforce' : True #make sure whichever force or functional you select is in the appropriate .param file
                         }
@@ -429,5 +423,5 @@ if __name__=='__main__':
     acd=AccetionDisk(param,file,timeY0_datasetdict)
     acd.surface(itypes=[12,15])
     surf=np.loadtxt('vav.dat')
-    
+        
 
