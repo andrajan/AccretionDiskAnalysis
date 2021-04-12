@@ -14,7 +14,7 @@ import structfact as st
 from scipy.interpolate import Rbf
 import os
 import matplotlib.pyplot as plt
-from RPAStructure import main as RPA
+from RPAStructure.main import main as RPA
 
 print(os.getcwd())
 
@@ -37,7 +37,7 @@ class AccetionDisk():
        
        if param['preprocessed_crosssections']:
            self.fulldata=np.loadtxt(datapath)
-           
+           print(self.fulldata.shape)
        else:
            self.fulldata=generate_data(datapath,param['crossparam'],datasetdict)
            print(self.fulldata.shape)   
@@ -261,7 +261,6 @@ def gencrossdata(param,temp,dens,electronfrac):
     mod=(45*temp**5*sp.zeta(5))/2 #integral when the fermi dirac distribution is multiplied by E^2
     avge=eavg/sflux #average energy for use in annihilation reactions
     
-    
     #electron collisions hav more complex energy depedences 
     vhit=[]
     avhit=[]
@@ -319,15 +318,17 @@ def gencrossdata(param,temp,dens,electronfrac):
         
         paramRPA=param['paramRPA']
         
-        functionalname=param['functional name'] # name of energy density functional to use in calculations
+        functionalname=paramRPA['functional name'] # name of energy density functional to use in calculations
         ftype=paramRPA['type'] # this allows the turning on and off of certain types oforces (eg. Tensorial forces)
-        readforce=paramRPA['force or functional'] # are the parameters provided in terms of the residual force or energy density functional
+        readforce=paramRPA['readforce'] # are the parameters provided in terms of the residual force or energy density functional
         
         neutralreac_inter=np.zeros(temp.shape)
         i=0
         for t,y,rho in zip(temp,electronfrac,dens):
-                neutralreac_inter[i]=RPA.main.anmfp(rho,y,temp,functionalname,'NONE',readforce,avge)**-1/avge**2*mod/sflux
-                i+=1
+            os.chdir('RPAStructure')
+            neutralreac_inter[i]=RPA.anmfp(rho,y,t,functionalname,ftype,readforce,1)**-1**2*mod[i]/sflux[i]/1e15
+            os.chdir('..')
+            i+=1
                 
     #Now we need to put the reactions together and find the total cross sections for different species
     
@@ -393,7 +394,7 @@ NL3_datasetdict={
     }
         
 param={
-       'preprocessed_crosssections':True,
+       'preprocessed_crosssections':False,
        
        
        
@@ -407,7 +408,7 @@ param={
                        'SAlow':False,
                        
                        },
-                'RPAparam' :
+                'paramRPA' :
                     {
                         'functional name' : 'BARE', #see .param files in RPAStructure directory for possible inputs
                         'type' : 'NONE',
@@ -419,15 +420,14 @@ param={
        }
     
 surf=np.loadtxt('vav.dat')
-print(surf.shape)
-plt.plot(surf[:,0],surf[:,2])
+#print(surf.shape)
+#plt.plot(surf[:,0],surf[:,2])
 
 if __name__=='__main__': 
     file='data/time3500Y0/time3500Y0.dat'
     filepro='data/NL3_t2.5ms_Y0/AxFitSV/crossoptdata.dat'
-    acd=AccetionDisk(param,filepro,timeY0_datasetdict)
+    acd=AccetionDisk(param,file,timeY0_datasetdict)
     acd.surface(itypes=[12,15])
     surf=np.loadtxt('vav.dat')
-    plt.plot
     
-    
+
