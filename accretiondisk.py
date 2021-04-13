@@ -1,4 +1,4 @@
-mport numpy as np
+import numpy as np
 import nointercross as cr
 import edense as ed
 import scipy.integrate as integ
