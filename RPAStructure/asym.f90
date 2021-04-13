@@ -266,7 +266,7 @@ contains
 
         end do
         !$omp end parallel do
-        avgnmfp=gfactor/sum(llw). ![m]
+        avgnmfp=gfactor/sum(llw) ![m]
         cross=1.d0/avgnmfp
         
 
