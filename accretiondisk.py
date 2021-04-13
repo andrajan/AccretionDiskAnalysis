@@ -322,7 +322,7 @@ def gencrossdata(param,temp,dens,electronfrac):
             neutralreac_inter[i]=RPA.anmfp(rho,y,t,functionalname,ftype,readforce,1)**-1**2*mod[i]/sflux[i]/1e15
             os.chdir('..')
             i+=1
-            print(i,temp.shape[0]))
+            print(i,temp.shape[0])
                 
     #Now we need to put the reactions together and find the total cross sections for different species
     
