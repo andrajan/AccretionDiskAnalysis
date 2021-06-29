@@ -4,6 +4,10 @@
 Created on Wed May 20 14:02:49 2020
 
 @author: rajananderson
+
+This module calculates cross sections for the virial approaches and non-interacting approaches.
+Other unaltered cross sections are also present here.
+
 """
 import math as m
 import structfact as st
@@ -83,13 +87,28 @@ def vanil(e,avge):   # other neutrino annhilation vx + bar(vx) --> x + bar(x)
     return vanil
 
 
-def vecross(temp,dens,y,inter,SA=1,SV=1):
+def vecross(temp,dens,y,inter=False,SA=1,SV=1): 
+    '''
+
+    Parameters
+    ----------
+    inter : If inter is selected the axial fit structure factor and the vector virial structure factor will be turned on.
+
+    SA : Provides option ato input directly the axial structure factor.
+    SV : Provides option ato input directly the vwector structure factor.
+
+    Returns
+    -------
+    cross : elecrtron neutrino cross section.
+
+    '''
+
     rhop=dens*y
     rhon=dens-rhop
     
     if inter:
         SA=st.sa_f(temp,y,dens)
-        SV=1#st.sv(temp, y, dens)
+        SV=st.sv(temp, y, dens)
     
     
     sflux=sp.zeta(3)*3/2*temp**3
@@ -114,12 +133,26 @@ def vecross(temp,dens,y,inter,SA=1,SV=1):
     return cross
 
 def avecross(temp,dens,y,inter=False,SA=1,SV=1):
+    '''
+
+    Parameters
+    ----------
+    inter : If inter is selected the axial fit structure factor and the vector virial structure factor will be turned on.
+
+    SA : Provides option ato input directly the axial structure factor.
+    SV : Provides option ato input directly the vwector structure factor.
+
+    Returns
+    -------
+    cross : anti-elecrtron neutrino cross section.
+
+    '''
     rhop=dens*y
     rhon=dens-rhop
     
     if inter:
         SA=st.sa_f(temp,y,dens)
-        SV=1#st.sv(temp, y, dens)
+        SV=st.sv(temp, y, dens)
         
     sflux=sp.zeta(3)*3/2*temp**3
     eavg=(7*temp**4*pi**4)/120
@@ -146,13 +179,29 @@ def avecross(temp,dens,y,inter=False,SA=1,SV=1):
     return cross
 
 def neutralcross(temp,dens,y,inter,SA=1,SV=1,ST=1):
+    '''
+
+    Parameters
+    ----------
+    inter : If inter is selected the axial fit structure factor and the vector virial structure factor will be turned on.
+
+    SA : Provides option ato input directly the axial structure factor.
+    SV : Provides option ato input directly the vwector structure factor.
+    stru: Provides option to manually input total structure factor
+
+    Returns
+    -------
+    cross : Cross section of only neutral current reactions
+
+    '''
+
     rhop=dens*y
     rhon=dens-rhop
     stru=1
     
     if inter:
         SA=st.sa_f(temp,y,dens)
-        #stru=st.stot_f(temp,y,dens)
+        SV=st.sv(temp, y, dens)
     
     
     sflux=sp.zeta(3)*3/2*temp**3
@@ -163,6 +212,22 @@ def neutralcross(temp,dens,y,inter,SA=1,SV=1,ST=1):
     return neutralreac
 
 def vcross(temp,dens,y,inter=True,SA=1,SV=1):
+    '''
+
+    Parameters
+    ----------
+    inter : If inter is selected the axial fit structure factor and the vector virial structure factor will be turned on.
+
+    SA : Provides option ato input directly the axial structure factor.
+    SV : Provides option ato input directly the vwector structure factor.
+    stru: Provides option to manually input total structure factor
+
+    Returns
+    -------
+    cross : Mu and Tau neutrino cross section
+
+    '''
+
     rhop=dens*y
     rhon=dens-rhop
     

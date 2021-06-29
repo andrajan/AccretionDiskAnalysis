@@ -4,12 +4,32 @@
 Created on Mon May 18 22:03:38 2020
 
 @author: rajananderson
+
+
+This calculates structure factors based on the virial approximation. See Horowitz et al (2017)
+
 """
 import numpy as np
 import sympy
 from sympy import Symbol, solve, nsolve
 
 def sa_f(temp,y,dens):
+    '''
+    Structure factor fit to random phase approximation approach from Horowitz et al (2017)
+
+    Parameters
+    ----------
+    temp : Temperature in MeV.
+    
+    y : Electron Fraction.
+    
+    dens : Density in fm^-3.
+
+    Returns
+    -------
+    sa : Axial structure Factor.
+
+    '''
     a0,b0,c0,d0=920,3.05,6140,1.5e13
     a=a0*dens*(1.-y+y**2.)/temp**1.22
     b=b0/temp**0.75
@@ -20,6 +40,24 @@ def sa_f(temp,y,dens):
 
 
 def Sa_loworder(temp,y,dens):
+    '''
+
+
+    Parameters
+    ----------
+    ----------
+    temp : Temperature in MeV.
+    
+    y : Electron Fraction.
+    
+    dens : Density in fm^-3.
+
+    Returns
+    -------
+    
+    Axial structure function based on the virial equation of state. See Horowitz (2017)
+    
+    '''
     rhon,rhop=seperatedens(y,dens)
     lamb=(2.*np.pi/938.27208816/temp)**0.5*197.33
 
@@ -61,6 +99,10 @@ def seperatedens(y,dens):
     return rhon,rhop
 
 def fuga(bn,bpn,rho1,rho2,lamb):
+    '''
+    This functions solves for a fugacity given two densities, a thermal wavelengthn and two virial coefficients
+
+    '''
     a=lamb**6*rho1**2*bn/8/bpn**2
     b=lamb**3*rho1/4/bpn-lamb**3*rho1*bn/2/bpn**2
     c=-1/2/bpn+lamb**3*rho1/2-lamb**3*rho1*bn**2/bpn**2+bn/2/bpn**2-rho2*lamb**3/2
@@ -75,6 +117,9 @@ def fuga(bn,bpn,rho1,rho2,lamb):
 
 
 def sv(temp,y,dens):
+    '''
+    This function outputs the vector structure factor based on temperature (MeV), electron fraction, and density (fm^-3)
+    '''
     rhon,rhop=seperatedens(y,dens)
     cnv=0.5
     cpv=0.04
@@ -104,7 +149,6 @@ def sv(temp,y,dens):
     fugn=fugn[choon.index(min(choon))]
     fugp=fugp[choop.index(min(choop))]
     
-    print(np.log(fugn)*temp)
     svc=(1.+4./lamb**3.*(cnv**2.*fugn**2.*bn+2.*cpv*cnv*fugn*fugp*bpn+cpv**2.*fugp**2.*bn)
     /(cnv**2.*rhon+cpv**2.*rhop))
     return svc
@@ -127,12 +171,13 @@ def fugax(ba,bapn,rhon,rhop,lamb):
 '''
 
 def stot_f(temp,y,dens):
+    '''
+    Approximate total structure Factor
+    
+    '''
     ga=1.93
     stot=(5*ga**2*sa_f(temp,y,dens)+(1-y)*sv(temp,y,dens))/(5*ga**2+1-y)
     return stot
 
 if __name__=='__main__': 
-    temp=[0.5,1,2,4,6,10,14]
-    for t in temp:
-        print(sv(t,0.0000000001, 1e-10))
-
+    print('testintgzone')
