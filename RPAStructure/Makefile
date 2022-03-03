@@ -1,5 +1,5 @@
 BUILDER = gfortran 
-FFLAGS = -ffree-line-length-0 -Wall -O2
+FFLAGS = -ffree-line-length-0 -Wall -O2 -fPIC
 OPT = -fopenmp
 
 #
@@ -26,8 +26,8 @@ MAIN = main.so
 
 
 $(MAIN) : librpa.a $(OBJMAIN)
-	f2py --fcompiler=$(F90) -I. -c -m main main.f90 librpa.a --f90flags=$(OPT) -lgomp
-	f2py -h main.pyf main.f90 --overwrite-signature
+	f2py --fcompiler=$(F90) --f90flags="-fPIC" -I. -c -m main main.f90 librpa.a --f90flags=$(OPT) -lgomp
+
 
 librpa.a: $(OBJS)
 	touch librpa.a
