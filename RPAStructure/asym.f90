@@ -226,7 +226,7 @@ contains
         
 
         xcut=7
-        gfactor = 1.0_pr/5.297376431_pr         !
+        gfactor = 1000_pr/5.29727206_pr         !inverse Fermi coupling constant squared plus unit change to meters
         
     rhoP=rho*Y
     rhoN=rho-rhoP
