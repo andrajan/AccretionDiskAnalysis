@@ -4,7 +4,7 @@ In this package various tools are provided to vissualize information about neutr
 
 ## Set Up
 
-1. install requirements listed in the requirements.txt file
+1. Use environment files to download appropriate conda environment for your system. Alternatively use the requirements.txt file and make sure you have gfortran installed (caution more setup may be required for Debian).
 2. First we compile edense.f90. To do this enter the following 
 
           f2py -m edense -c edense.f90
